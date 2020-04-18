@@ -11,7 +11,7 @@ class Block {
         // 透明度
         this.opacity = 0
         this.opacityTarget = 0
-        this.opacitySpeed = 0.01
+        this.opacitySpeed = 0.4
         // 放大比例，用以控制方块创建时候的显示，方块合并时候的放大缩小效果
         this.scale = 0
         this.scaleTarget = 0
@@ -20,7 +20,7 @@ class Block {
         this.shakeFlag = 0
         this.ctx = ctx
         this.borderRadius = 10
-        this.destroy = false
+        this.zIndex = 0
         this.colorMap = {
             2: {
                 fontSize: 0.6,
@@ -84,6 +84,7 @@ class Block {
         this.shakeFlag = 1
         this.scaleTarget = 1.1
         this.scaleSpeed = 0.02
+        this.zIndex = 1
     }
 
     show () {
@@ -97,7 +98,8 @@ class Block {
 
     hide () {
         this.opacityTarget = 0
-        this.scaleTarget = 0
+        this.opacitySpeed = 0.2
+        this.destroy = true
     }
 
     next () {
@@ -135,6 +137,9 @@ class Block {
         // 如果当前 shakeFlag 是 2，则表示现在是方块合并的时候缩小的状态
         if (this.shakeFlag === 2 && this.scale === this.scaleTarget) {
             this.shakeFlag = 0
+        }
+        if (this.scale === 1) {
+            this.zIndex = 0
         }
     }
 
@@ -176,10 +181,12 @@ class Block {
     setPosition (targetCol, targetRow) {
         this.targetCol = targetCol
         this.targetRow = targetRow
+        this.col = targetCol
+        this.row = targetRow
     }
 
-    dispose () {
-        this.destroy = true
-    }
+    // dispose () {
+    //     this.destroy = true
+    // }
 }
 export default Block
